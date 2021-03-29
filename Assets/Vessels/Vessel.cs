@@ -9,6 +9,7 @@ namespace Assets.Vessels
 {
     public abstract class Vessel : MonoBehaviour
     {
+
         // Start is called before the first frame update
         public abstract void Start();
 
@@ -29,6 +30,11 @@ namespace Assets.Vessels
         /// Define Behavior for Sinking after attack hit
         /// </summary>
         public abstract void Sink(float sinkSpeed);
+
+        /// <summary>
+        /// Define Behavior for Collisions
+        /// </summary>
+        public abstract void OnCollisionEnter2D(Collision2D coll);
 
 
     }

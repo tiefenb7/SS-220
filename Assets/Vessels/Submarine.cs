@@ -1,15 +1,20 @@
 using Assets.Vessels;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Submarine : Vessel
 {
+    const string _tagNameConstant = "Submarine";
+
     /// <summary>
     /// Monobehavior start: Start is called before the first frame update
     /// </summary>
     public override void Start()
     {
+        GameObject gameObject = new GameObject();
+        gameObject.tag = _tagNameConstant;
     }
 
     /// <summary>
@@ -46,5 +51,26 @@ public class Submarine : Vessel
     public override void Sink(float sinkSpeed)
     {
         throw new System.NotImplementedException();
+    }
+
+    public override void OnCollisionEnter2D(Collision2D collision)
+    {
+        switch(collision.collider.name)
+        {
+            case "LeftBoundary":
+                Debug.Log("Collided with Left Boundary");
+                break;
+            case "RightBoundary":
+                Debug.Log("Collided with Right Boundary");
+                break;
+            case "LowerBoundary":
+                Debug.Log("Collided with Lower Boundary");
+                break;
+            case "UpperBoundary":
+                Debug.Log("Collided with Upper Boundary");
+                break;
+            default:
+                throw new Exception("Collision happened with no defined object!");
+        }
     }
 }
