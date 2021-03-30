@@ -19,7 +19,7 @@ namespace Assets.Vessels
         /// <summary>
         /// Define Behavior for Machine Movement
         /// </summary>
-        public abstract void Move(float moveSpeed);
+        public abstract void Move();
         
         /// <summary>
         /// Define Behavior for Attack

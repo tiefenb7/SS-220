@@ -1,4 +1,5 @@
 using Assets.Vessels;
+using Assets.Vessels.Movement;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,6 +8,9 @@ using UnityEngine;
 public class Submarine : Vessel
 {
     const string _tagNameConstant = "Submarine";
+    const float _movementSpeed = 1f;
+    private Movement _movement = new Movement();
+
 
     /// <summary>
     /// Monobehavior start: Start is called before the first frame update
@@ -22,7 +26,8 @@ public class Submarine : Vessel
     /// </summary>
     public override void Update()
     {
-        this.Move(1f);
+        _movement.MovementDirection();
+        this.Move();
     }
 
     /// <summary>
@@ -39,9 +44,10 @@ public class Submarine : Vessel
     /// deltaTime ensures frames are consistent between devices.
     /// </summary>
     /// <param name="moveSpeed"></param>
-    public override void Move(float moveSpeed)
+    public override void Move()
     {
-        transform.Translate(moveSpeed * Input.GetAxis("Horizontal") * Time.deltaTime, moveSpeed * Input.GetAxis("Vertical") * Time.deltaTime, 0f);
+        transform.Translate(_movementSpeed * _movement.getHorizontalMovementDirection() * Time.deltaTime, _movementSpeed * _movement.getVerticalMovementDirection() * Time.deltaTime, 0f);
+        
     }
 
     /// <summary>
@@ -53,21 +59,25 @@ public class Submarine : Vessel
         throw new System.NotImplementedException();
     }
 
+    /// <summary>
+    /// If Submarine hits boundary, move object in opposite direction
+    /// </summary>
+    /// <param name="collision"></param>
     public override void OnCollisionEnter2D(Collision2D collision)
     {
         switch(collision.collider.name)
         {
             case "LeftBoundary":
-                Debug.Log("Collided with Left Boundary");
+                _movement.MovementDirection(1f, _movement.getVerticalMovementDirection());
                 break;
             case "RightBoundary":
-                Debug.Log("Collided with Right Boundary");
+                _movement.MovementDirection(-1f, _movement.getVerticalMovementDirection());
                 break;
             case "LowerBoundary":
-                Debug.Log("Collided with Lower Boundary");
+                _movement.MovementDirection(_movement.getHorizontalMovementDirection(), 1f);
                 break;
             case "UpperBoundary":
-                Debug.Log("Collided with Upper Boundary");
+                _movement.MovementDirection(_movement.getHorizontalMovementDirection(), -1f);
                 break;
             default:
                 throw new Exception("Collision happened with no defined object!");
